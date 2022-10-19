@@ -31,10 +31,10 @@ class MainTabController: UITabBarController {
         let nav2 = templatNavigationController(image: UIImage(named: "search_unselected"), rootViewController: explore)
         
         let notifications = NotificationsController()
-        let nav3 = templatNavigationController(image: UIImage(named: "search_unselected"), rootViewController: notifications)
+        let nav3 = templatNavigationController(image: UIImage(named: "like_unselected"), rootViewController: notifications)
         
         let conversations = ConversationsController()
-        let nav4 = templatNavigationController(image: UIImage(named: "search_unselected"), rootViewController: conversations)
+        let nav4 = templatNavigationController(image: UIImage(named: "ic_mail_outline_white_2x-1"), rootViewController: conversations)
         
         viewControllers = [nav1, nav2, nav3, nav4]
     }
@@ -51,7 +51,7 @@ class MainTabController: UITabBarController {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .white
         nav.navigationBar.standardAppearance = appearance
-        nav.navigationBar.scrollEdgeAppearance = nav.navigationBar.standardAppearance
+        nav.navigationBar.scrollEdgeAppearance = appearance
         
         return nav
     }
