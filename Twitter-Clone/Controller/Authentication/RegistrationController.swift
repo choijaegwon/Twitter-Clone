@@ -108,6 +108,8 @@ class RegistrationController: UIViewController {
     
     func configureUI() {
         view.backgroundColor = .twitterBlue
+        // 뒤로가기 버튼 흰색으로 변경
+        navigationController?.navigationBar.tintColor = .white
         
         view.addSubview(plusPhotoButton)
         plusPhotoButton.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor)
