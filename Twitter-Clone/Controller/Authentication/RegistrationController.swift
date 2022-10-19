@@ -11,6 +11,8 @@ class RegistrationController: UIViewController {
     
     // MARK: - Properties
     
+    private let imagePicker = UIImagePickerController()
+    
     private let plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "plus_photo"), for: .normal)
@@ -93,7 +95,7 @@ class RegistrationController: UIViewController {
     // MARK: - Selectors
     
     @objc func handleAddProfilePhoto() {
-        print(#function)
+        present(imagePicker, animated: true, completion: nil)
     }
     
     @objc func handleRegistration() {
@@ -111,6 +113,11 @@ class RegistrationController: UIViewController {
         // 뒤로가기 버튼 흰색으로 변경
         navigationController?.navigationBar.tintColor = .white
         
+        // 이미지 피커를 사용하려면 작성해야하는 코드
+        imagePicker.delegate = self
+        // 수정가능 여부
+        imagePicker.allowsEditing = true
+        
         view.addSubview(plusPhotoButton)
         plusPhotoButton.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor)
         plusPhotoButton.setDimensions(width: 128, height: 128)
@@ -125,5 +132,26 @@ class RegistrationController: UIViewController {
         
         view.addSubview(alreadyAccountButton)
         alreadyAccountButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 40, paddingRight: 40)
+    }
+}
+
+// MARK: - UIImagePickerControllerDelegate
+
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let profileImage = info[.editedImage] as? UIImage else { return }
+        // 이미지 선택후 원으로 만들기
+        plusPhotoButton.layer.cornerRadius = 128 / 2
+        plusPhotoButton.layer.masksToBounds = true
+        // 이미지 비율 조절
+        plusPhotoButton.imageView?.contentMode = .scaleAspectFill
+        plusPhotoButton.imageView?.clipsToBounds = true
+        // 이미지 선택후 테두리
+        plusPhotoButton.layer.borderColor = UIColor.white.cgColor
+        plusPhotoButton.layer.borderWidth = 3
+        
+        self.plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        dismiss(animated: true, completion: nil)
     }
 }
