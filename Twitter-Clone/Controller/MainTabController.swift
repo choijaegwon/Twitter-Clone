@@ -64,12 +64,10 @@ class MainTabController: UITabBarController {
     // navBar를 편하게 만들어주는 함수.
     func templatNavigationController(image: UIImage?, rootViewController: UIViewController) -> UINavigationController {
         let nav = UINavigationController(rootViewController: rootViewController)
-        
         nav.tabBarItem.image = image
         nav.navigationBar.barTintColor = .white
         
         let appearance = UINavigationBarAppearance()
-        
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .white
         nav.navigationBar.standardAppearance = appearance
@@ -81,7 +79,6 @@ class MainTabController: UITabBarController {
     func uiTabBarSetting() {
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
-            
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = .white
             tabBar.standardAppearance = appearance

@@ -21,12 +21,10 @@ class LoginController: UIViewController {
     
     private lazy var emailContainerView: UIView = {
         let view = UIView()
-        
         view.backgroundColor = .red
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         let iv = UIImageView()
-        
         view.addSubview(iv)
         iv.image = #imageLiteral(resourceName: "ic_mail_outline_white_2x-1")
         iv.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, paddingLeft: 8, paddingBottom: 8)
@@ -41,7 +39,6 @@ class LoginController: UIViewController {
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         let iv = UIImageView()
-        
         view.addSubview(iv)
         iv.image = #imageLiteral(resourceName: "ic_lock_outline_white_2x")
         iv.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, paddingLeft: 8, paddingBottom: 8)
@@ -70,7 +67,6 @@ class LoginController: UIViewController {
         logoImageView.setDimensions(width: 150, height: 150)
         
         let stack = UIStackView(arrangedSubviews: [emailContainerView, passwordContainerView])
-        
         stack.axis = .vertical
         stack.spacing = 8
         
