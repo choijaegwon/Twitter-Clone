@@ -18,6 +18,8 @@
 		D4D4250B28FEECB500C136B3 /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4250A28FEECB500C136B3 /* NotificationsController.swift */; };
 		D4D4250D28FEECE400C136B3 /* ConversationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4250C28FEECE400C136B3 /* ConversationsController.swift */; };
 		D4D4250F28FFDA6E00C136B3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4250E28FFDA6E00C136B3 /* Extensions.swift */; };
+		D4D4251229002AE600C136B3 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4251129002AE600C136B3 /* LoginController.swift */; };
+		D4D4251429002B6200C136B3 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4251329002B6200C136B3 /* RegistrationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		D4D4250A28FEECB500C136B3 /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		D4D4250C28FEECE400C136B3 /* ConversationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsController.swift; sourceTree = "<group>"; };
 		D4D4250E28FFDA6E00C136B3 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		D4D4251129002AE600C136B3 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		D4D4251329002B6200C136B3 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,7 @@
 		D4D4250028FD8FEC00C136B3 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				D4D4251029002ABB00C136B3 /* Authentication */,
 				D4D4250428FD90E600C136B3 /* MainTabController.swift */,
 				D4D4250628FEEC3800C136B3 /* FeedController.swift */,
 				D4D4250828FEEC9100C136B3 /* ExploreController.swift */,
@@ -128,6 +133,15 @@
 			children = (
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D4D4251029002ABB00C136B3 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				D4D4251129002AE600C136B3 /* LoginController.swift */,
+				D4D4251329002B6200C136B3 /* RegistrationController.swift */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,9 +219,11 @@
 				D4D4250D28FEECE400C136B3 /* ConversationsController.swift in Sources */,
 				D4D424EB28FD8F9B00C136B3 /* AppDelegate.swift in Sources */,
 				D4D4250F28FFDA6E00C136B3 /* Extensions.swift in Sources */,
+				D4D4251229002AE600C136B3 /* LoginController.swift in Sources */,
 				D4D4250928FEEC9100C136B3 /* ExploreController.swift in Sources */,
 				D4D424ED28FD8F9B00C136B3 /* SceneDelegate.swift in Sources */,
 				D4D4250528FD90E600C136B3 /* MainTabController.swift in Sources */,
+				D4D4251429002B6200C136B3 /* RegistrationController.swift in Sources */,
 				D4D4250728FEEC3800C136B3 /* FeedController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -71,6 +71,7 @@ extension UIView {
         }
     }
     
+    // 크기 조절
     func setDimensions(width: CGFloat, height: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalToConstant: width).isActive = true
