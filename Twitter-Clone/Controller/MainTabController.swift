@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MainTabController: UITabBarController {
 
@@ -24,10 +25,35 @@ class MainTabController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        uiTabBarSetting()
-        configtureViewControllers()
-        configureUI()
+        //logUserOut()
+        view.backgroundColor = .twitterBlue
+        authenticateUserAndConfigureUI()
+    }
+    
+    // MARK: - API
+    
+    // 로그인 되어있을때, 안되어있을때 화면 구분하기
+    func authenticateUserAndConfigureUI() {
+        // 로그인이 안되어있으면, 로그인화면 보여주기
+        if Auth.auth().currentUser == nil {
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true, completion: nil)
+            }
+        } else {
+            uiTabBarSetting()
+            configtureViewControllers()
+            configureUI()
+        }
+    }
+    
+    func logUserOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch let error {
+            print("DEBUG: Failed to sign out wuth error \(error.localizedDescription)")
+        }
     }
     
     // MARK: - Selectors
