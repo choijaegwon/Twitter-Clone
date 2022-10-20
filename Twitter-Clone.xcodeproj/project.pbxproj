@@ -23,6 +23,7 @@
 		D4D4251429002B6200C136B3 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4251329002B6200C136B3 /* RegistrationController.swift */; };
 		D4D425162900459D00C136B3 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D425152900459D00C136B3 /* Utilities.swift */; };
 		D4D42518290086B500C136B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D4D42517290086B500C136B3 /* GoogleService-Info.plist */; };
+		D4D4251A29019F2E00C136B3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4251929019F2E00C136B3 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		D4D4251329002B6200C136B3 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		D4D425152900459D00C136B3 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		D4D42517290086B500C136B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D4D4251929019F2E00C136B3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +68,6 @@
 				14CEBEB7AA3AB7016D9EB9C5 /* Pods-Twitter-Clone.debug.xcconfig */,
 				0A9069EC0BBB1EDF13212081 /* Pods-Twitter-Clone.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -121,6 +122,7 @@
 			children = (
 				D4D4250E28FFDA6E00C136B3 /* Extensions.swift */,
 				D4D425152900459D00C136B3 /* Utilities.swift */,
+				D4D4251929019F2E00C136B3 /* Constants.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -302,6 +304,7 @@
 				D4D4250528FD90E600C136B3 /* MainTabController.swift in Sources */,
 				D4D4251429002B6200C136B3 /* RegistrationController.swift in Sources */,
 				D4D4250728FEEC3800C136B3 /* FeedController.swift in Sources */,
+				D4D4251A29019F2E00C136B3 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
