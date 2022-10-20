@@ -13,6 +13,8 @@ class RegistrationController: UIViewController {
     // MARK: - Properties
     
     private let imagePicker = UIImagePickerController()
+    // 프로필 이미지를 담을 변수
+    private var profileImage: UIImage?
     
     private let plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
@@ -100,8 +102,14 @@ class RegistrationController: UIViewController {
     }
     
     @objc func handleRegistration() {
+        guard let profileImage = profileImage else {
+            print("DEBUG: Please select a profile image..")
+            return
+        }
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
+        guard let fullname = fullnameTextField.text else { return }
+        guard let username = usernameTextField.text else { return }
         
         // 파이어베이스에 회원가입
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
@@ -109,7 +117,18 @@ class RegistrationController: UIViewController {
                 print("DEBUG: Error is \(error.localizedDescription)")
                 return
             }
-            print("DEBUG: Succesfully registered user")
+            
+            // 사용자의 User UID
+            guard let uid = result?.user.uid else { return }
+            // 저장할 값을 딕셔너리형태로 만들어준다.
+            let values = ["email": email, "username": username, "fullname": fullname]
+            // 저장할 경로 Database.database().reference()까진 같고,
+            // 그뒤 "users"란 키를 추가할건데 그걸 .child(uid)에 추가할 것이다.
+            let ref = Database.database().reference().child("users").child(uid)
+            // 추가하는 메서드 .updateChildValues이고, values을 넣어준다.
+            ref.updateChildValues(values) { error, ref in
+                print("DEBUG: Seuccessfully updated user information..")
+            }
         }
     }
     
@@ -152,6 +171,8 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let profileImage = info[.editedImage] as? UIImage else { return }
+        self.profileImage = profileImage
+        
         // 이미지 선택후 원으로 만들기
         plusPhotoButton.layer.cornerRadius = 128 / 2
         plusPhotoButton.layer.masksToBounds = true
