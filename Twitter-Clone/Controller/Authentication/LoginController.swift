@@ -84,7 +84,14 @@ class LoginController: UIViewController {
                 print("DEBUG: Error loggin in \(error.localizedDescription)")
                 return
             }
-            print("DEBUG: Successful log in..")
+            // MainTabController에 있는 authenticateUserAndConfigureUI함수 호출하려는 코드
+            let scenes = UIApplication.shared.connectedScenes
+            let windowScene = scenes.first as? UIWindowScene
+            guard let window = windowScene?.windows.first(where: { $0.isKeyWindow }) else { return }
+            guard let tab = window.rootViewController as? MainTabController else { return }
+            
+            tab.authenticateUserAndConfigureUI()
+            self.dismiss(animated: true, completion: nil)
         }
     }
 

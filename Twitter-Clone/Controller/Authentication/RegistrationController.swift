@@ -66,7 +66,6 @@ class RegistrationController: UIViewController {
     
     private let usernameTextField: UITextField = {
         let tf = Utilities().textField(withPlaceholder: "Username")
-        tf.isSecureTextEntry = true
         return tf
     }()
     
@@ -114,8 +113,14 @@ class RegistrationController: UIViewController {
         let credentials = AuthCredentials(email: email, password: password, fullname: fullname, username: username, profileImage: profileImage)
         
         AuthService.shared.registerUser(credentials: credentials) { error, ref in
-            print("DEBUG: Sign up successful..")
-            print("DEBUG: Handle update user interface here..")
+            // MainTabController에 있는 authenticateUserAndConfigureUI함수 호출하려는 코드
+            let scenes = UIApplication.shared.connectedScenes
+            let windowScene = scenes.first as? UIWindowScene
+            guard let window = windowScene?.windows.first(where: { $0.isKeyWindow }) else { return }
+            guard let tab = window.rootViewController as? MainTabController else { return }
+            
+            tab.authenticateUserAndConfigureUI()
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
