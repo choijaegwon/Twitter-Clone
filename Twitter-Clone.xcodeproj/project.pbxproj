@@ -24,6 +24,7 @@
 		D4D425162900459D00C136B3 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D425152900459D00C136B3 /* Utilities.swift */; };
 		D4D42518290086B500C136B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D4D42517290086B500C136B3 /* GoogleService-Info.plist */; };
 		D4D4251A29019F2E00C136B3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4251929019F2E00C136B3 /* Constants.swift */; };
+		D4D4251C2901D83100C136B3 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4251B2901D83100C136B3 /* AuthService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		D4D425152900459D00C136B3 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		D4D42517290086B500C136B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D4D4251929019F2E00C136B3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D4D4251B2901D83100C136B3 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 		D4D424FF28FD8FEA00C136B3 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				D4D4251B2901D83100C136B3 /* AuthService.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				D4D424EB28FD8F9B00C136B3 /* AppDelegate.swift in Sources */,
 				D4D4250F28FFDA6E00C136B3 /* Extensions.swift in Sources */,
 				D4D4251229002AE600C136B3 /* LoginController.swift in Sources */,
+				D4D4251C2901D83100C136B3 /* AuthService.swift in Sources */,
 				D4D4250928FEEC9100C136B3 /* ExploreController.swift in Sources */,
 				D4D424ED28FD8F9B00C136B3 /* SceneDelegate.swift in Sources */,
 				D4D4250528FD90E600C136B3 /* MainTabController.swift in Sources */,
