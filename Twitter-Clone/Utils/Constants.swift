@@ -19,4 +19,5 @@ let STORAGE_PROFILE_IMAGES = STORAGE_REF.child("profile_images")
 // 추가하는 메서드 .updateChildValues이고, values을 넣어준다.
 let DB_REF = Database.database().reference()
 let REF_USERS = DB_REF.child("uesrs")
+let REF_TWEETS = DB_REF.child("tweets")
 
