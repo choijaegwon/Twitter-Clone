@@ -10,7 +10,7 @@ import Firebase
 struct UserSerivce {
     static let shared = UserSerivce()
     
-    func fetchUser() {
+    func fetchUser(completion: @escaping(User) -> Void) {
         // Realtime Database에서 uid 가져오기.
         guard let uid = Auth.auth().currentUser?.uid else { return }
         // Realtime Database에서 uid아래있는 값들 snapshot으로 다 가져오기.
@@ -19,9 +19,8 @@ struct UserSerivce {
             guard let dictionary = snapshot.value as? [String: AnyObject] else { return }
             // 모델 객체에 넣어줘서 초기화 시키기.
             let user = User(uid: snapshot.key, dictionary: dictionary)
-            
-            print("DEBUG: Username is \(user.username)")
-            print("DEBUG: Fullname is \(user.fullname)")
+            // 넣어준 정보를 completion을 활용해 넘겨주기.
+            completion(user)
         }
     }
 }

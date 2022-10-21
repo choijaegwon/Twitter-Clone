@@ -12,6 +12,18 @@ class MainTabController: UITabBarController {
 
     // MARK: - Properties
     
+    var user:User? {
+        // 값이 들어오면 호출된다. fetchUser()에서 self.user = user로 값이 들어옴.
+        didSet {
+            // viewControllers = [nav1, nav2, nav3, nav4]에서 [0]으로, FeedControoler을 불러준후,
+            guard let nav = viewControllers?[0] as? UINavigationController else { return }
+            // FeedController의 속성값을 사용할 수있게 타입캐스팅을 해준후
+            guard let feed = nav.viewControllers.first as? FeedController else { return }
+            // 들어온 값을 feed.user에 넣어준다.
+            feed.user = user
+        }
+    }
+    
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -33,7 +45,9 @@ class MainTabController: UITabBarController {
     // MARK: - API
     
     func fetchUser() {
-        UserSerivce.shared.fetchUser()
+        UserSerivce.shared.fetchUser { user in
+            self.user = user
+        }
     }
     
     // 로그인 되어있을때, 안되어있을때 화면 구분하기
