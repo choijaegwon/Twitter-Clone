@@ -32,6 +32,10 @@ class MainTabController: UITabBarController {
     
     // MARK: - API
     
+    func fetchUser() {
+        UserSerivce.shared.fetchUser()
+    }
+    
     // 로그인 되어있을때, 안되어있을때 화면 구분하기
     func authenticateUserAndConfigureUI() {
         // 로그인이 안되어있으면, 로그인화면 보여주기
@@ -45,6 +49,7 @@ class MainTabController: UITabBarController {
             uiTabBarSetting()
             configtureViewControllers()
             configureUI()
+            fetchUser()
         }
     }
     
