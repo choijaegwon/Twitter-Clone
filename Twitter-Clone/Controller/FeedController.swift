@@ -14,6 +14,13 @@ class FeedController: UICollectionViewController {
     
     // MARK: - Properties
     
+    private var tweets = [Tweet]() {
+        // 정보를 받아올때, 다시 리로드해준다.(그이유는 처음에 그냥 깔면 data가 없는 상태로 로드되기 때문)
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
     var user: User? {
         didSet {
             configureLeftBarButton()
@@ -31,7 +38,7 @@ class FeedController: UICollectionViewController {
     
     func fetchTweets() {
         TweetService.shared.fetchTweets { tweets in
-            print("DEBUG: Tweets are \(tweets)")
+            self.tweets = tweets
         }
     }
     
@@ -66,11 +73,13 @@ class FeedController: UICollectionViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate/DataSource
+
 extension FeedController {
     
     //섹션의 항목 수
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return tweets.count
     }
     
     // 어떤 cell을 보여줄건지
@@ -79,6 +88,8 @@ extension FeedController {
         return cell
     }
 }
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension FeedController: UICollectionViewDelegateFlowLayout {
     
