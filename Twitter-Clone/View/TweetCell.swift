@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TweetCellDelegate: class {
+    func handleProfileImageTapped()
+}
+
 class TweetCell: UICollectionViewCell {
     
     // MARK: - Properties
@@ -16,14 +20,21 @@ class TweetCell: UICollectionViewCell {
             configure()
         }
     }
+    
+    weak var delegate: TweetCellDelegate?
 
-    private let profileImageView: UIImageView = {
+    private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.setDimensions(width: 48, height: 48)
         iv.layer.cornerRadius = 48 / 2
         iv.backgroundColor = .twitterBlue
+        // 이미지는 버튼처럼 클릭이 안되기 때문에, UITapGestureRecognizer를 사용해야한다.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        iv.addGestureRecognizer(tap)
+        iv.isUserInteractionEnabled = true
+        
         return iv
     }()
     
@@ -114,6 +125,10 @@ class TweetCell: UICollectionViewCell {
     }
     
     // MARK: - Selectors
+    
+    @objc func handleProfileImageTapped() {
+        delegate?.handleProfileImageTapped()
+    }
     
     @objc func handleCommentTapped() {
         

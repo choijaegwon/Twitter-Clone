@@ -88,7 +88,12 @@ extension FeedController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
         // 각셀의 순서에 맞게 TweetCell에 있는 tweet에 넣어준다.(여기서 TweetCell에있는 tweet에 didSet에 실행됨)
         cell.tweet = tweets[indexPath.row]
+        cell.delegate = self
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
     }
 }
 
@@ -101,3 +106,13 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: view.frame.width, height: 120)
     }
 }
+
+// MARK: - TweetCellDelegate
+
+extension FeedController: TweetCellDelegate {
+    func handleProfileImageTapped() {
+        let controller = ProfileController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
