@@ -96,7 +96,7 @@ class MainTabController: UITabBarController {
     
     func configtureViewControllers() {
         // TabBar에 추가하기
-        let feed = FeedController()
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav1 = templatNavigationController(image: UIImage(named: "home_unselected"), rootViewController: feed)
         
         let explore = ExploreController()
