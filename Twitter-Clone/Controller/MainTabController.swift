@@ -45,7 +45,9 @@ class MainTabController: UITabBarController {
     // MARK: - API
     
     func fetchUser() {
-        UserSerivce.shared.fetchUser { user in
+        // 현재 사용자 정보가져오기
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        UserSerivce.shared.fetchUser(uid: uid) { user in
             self.user = user
         }
     }

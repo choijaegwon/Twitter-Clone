@@ -10,9 +10,7 @@ import Firebase
 struct UserSerivce {
     static let shared = UserSerivce()
     
-    func fetchUser(completion: @escaping(User) -> Void) {
-        // Realtime Database에서 uid 가져오기.
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+    func fetchUser(uid: String, completion: @escaping(User) -> Void) {
         // Realtime Database에서 uid아래있는 값들 snapshot으로 다 가져오기.
         REF_USERS.child(uid).observeSingleEvent(of: .value) { snapshot in
             // 그값들을 dictionary값으로 바꿔주기
