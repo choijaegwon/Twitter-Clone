@@ -38,6 +38,7 @@ class FeedController: UICollectionViewController {
     
     func fetchTweets() {
         TweetService.shared.fetchTweets { tweets in
+            // 넘어온 정보를 [tweets]배열에 넘겨주기
             self.tweets = tweets
         }
     }
@@ -85,6 +86,8 @@ extension FeedController {
     // 어떤 cell을 보여줄건지
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
+        // 각셀의 순서에 맞게 TweetCell에 있는 tweet에 넣어준다.(여기서 TweetCell에있는 tweet에 didSet에 실행됨)
+        cell.tweet = tweets[indexPath.row]
         return cell
     }
 }
