@@ -22,7 +22,13 @@ struct TweetService {
                       "caption": caption] as [String : AnyObject]
         
         // childByAutoId -> 자동으로 id부여 후 딕셔너리구조로 넣기, 그리고 completion(완료후 나머진 거기서 직접설정해!)
-        REF_TWEETS.childByAutoId().updateChildValues(values, withCompletionBlock: completion)
+        let ref = REF_TWEETS.childByAutoId()
+
+        ref.updateChildValues(values) { err, ref in
+            guard let tweetID = ref.key else { return }
+            // 트윗 업로드가 완료된후 그키를 이용해 사용자 트윗 구조를 업데이트한다.
+            REF_USERS_TWEETS.child(uid).updateChildValues([tweetID: 1], withCompletionBlock: completion)
+        }
     }
     
     func fetchTweets(completion: @escaping([Tweet]) -> Void) {
