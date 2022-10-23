@@ -9,9 +9,16 @@ import UIKit
 
 private let reuseIdentifier = "ProfileFilterCell"
 
+// ProfileFilterCell이 클릭되었을때 underlineView이 움직이는지 아닌지
+protocol ProfileFilterViewDelegate: AnyObject {
+    func filterView(_ view: ProfileFilterView, didSelect indexPath: IndexPath)
+}
+
 class ProfileFilterView: UIView {
     
     // MARK: - Properties
+    
+    weak var delegate: ProfileFilterViewDelegate?
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -55,7 +62,10 @@ extension ProfileFilterView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension ProfileFilterView: UICollectionViewDelegate {
-
+    // 어떤게 클릭되었는지 indexPath로 넘겨주기
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.filterView(self, didSelect: indexPath)
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
