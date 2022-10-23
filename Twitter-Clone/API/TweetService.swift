@@ -48,4 +48,25 @@ struct TweetService {
             }
         }
     }
+    
+    func fetchTweets(forUser user: User, completion: @escaping([Tweet]) -> Void) {
+        var tweets = [Tweet]()
+        REF_USERS_TWEETS.child(user.uid).observe(.childAdded) { snapshot in
+            let tweetID = snapshot.key
+            
+            // tweetID 키를 가지고 tweets에 접근해서 그트윗의 정보를 가져온다.
+            REF_TWEETS.child(tweetID).observeSingleEvent(of: .value) { snapshot in
+                guard let dictionary = snapshot.value as? [String: Any] else { return }
+                // Tweet에 저장되어있는 uid불러오기
+                guard let uid = dictionary["uid"] as? String else { return }
+                
+                // Tweet에서 유저 정보를 사용하기 위함
+                UserSerivce.shared.fetchUser(uid: uid) { user in
+                    let tweet = Tweet(user: user, tweetID: tweetID, dictionary: dictionary)
+                    tweets.append(tweet)
+                    completion(tweets)
+                }
+            }
+        }
+    }
 }
