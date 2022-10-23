@@ -14,7 +14,7 @@ class ProfileController: UICollectionViewController {
     
     // MARK: - Properties
     
-    private let user: User
+    private var user: User
     
     private var tweets = [Tweet]() {
         // 정보를 받아올때, 다시 리로드해준다.(그이유는 처음에 그냥 깔면 data가 없는 상태로 로드되기 때문)
@@ -111,8 +111,21 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
 
 extension ProfileController: ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
-        UserSerivce.shared.followUser(uid: user.uid) { ref, err in
-            
+        
+        print("DEBUG: User is followed \(user.isFollowed) before button tap")
+        
+        if user.isFollowed {
+            // 팔로우한 상태라면 팔로우안한 상태로 바꿔주기
+            UserSerivce.shared.unfollowUser(uid: user.uid) { err, ref in
+                self.user.isFollowed = false
+                print("DEBUG: User is followed \(self.user.isFollowed) after button tap")
+            }
+        } else {
+            // 팔로우한 상태가아니라면 팔로우한 상태로 바꿔주기
+            UserSerivce.shared.followUser(uid: user.uid) { ref, err in
+                self.user.isFollowed = true
+                print("DEBUG: User is followed \(self.user.isFollowed) after button tap")
+            }
         }
     }
     

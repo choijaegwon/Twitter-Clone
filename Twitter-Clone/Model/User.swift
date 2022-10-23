@@ -14,6 +14,8 @@ struct User {
     let username: String
     var profileImageUrl: URL?
     let uid: String
+    // 사용자가 팔로우 하는지 안하는지 확인하는 변수.
+    var isFollowed = false
     
     // 로그인한 사용자인지 아닌지 확인해주는 변수
     var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
