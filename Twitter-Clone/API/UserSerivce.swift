@@ -32,4 +32,14 @@ struct UserSerivce {
             completion(users)
         }
     }
+    
+    func followUser(uid: String, completion: @escaping(Error?, DatabaseReference) -> Void) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        // user-following에 로그인한 사용자의 자식으로 보고있는 사람 uid로 추가를 하고,
+        REF_USERS_FOLLOWING.child(currentUid).updateChildValues([uid: 1]) { err, ref in
+            // user-followers에 보고있는 uid아래에 로그인한사람의 currentUid를 추가해준다.
+            REF_USERS_FOLLOWERS.child(uid).updateChildValues([currentUid: 1], withCompletionBlock: completion)
+        }
+    }
 }
