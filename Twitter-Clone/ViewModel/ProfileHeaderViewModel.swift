@@ -39,10 +39,18 @@ struct ProfileHeaderViewModel {
         // 만약에 내가 내프로필을 보는거면 edit profile로 되어있어야하고
         if user.isCurrentUser {
             return "Edit profile"
-        } else {
+        }
+        
+        // 사용자가 팔로우되지 않고, 사용자가 현재 사용자각 아니면
+        if !user.isFollowed && !user.isCurrentUser {
             return "Follow"
         }
-        // 그게 아니면 follow나 following을 할수있게 만들어야함
+        
+        if user.isFollowed {
+            return "Following"
+        }
+        
+        return "Loading"
     }
     
     init(user: User) {

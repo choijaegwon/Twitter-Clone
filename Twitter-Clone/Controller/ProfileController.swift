@@ -38,6 +38,7 @@ class ProfileController: UICollectionViewController {
         super.viewDidLoad()
         configureCollectionView()
         fetchTweets()
+        checkIfUserFollowed()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +55,13 @@ class ProfileController: UICollectionViewController {
         }
     }
 
+    // 사용자가 팔로우했는지 안했는지 체크해주는 메서드
+    func checkIfUserFollowed() {
+        UserSerivce.shared.checkIfUserFollowed(uid: user.uid) { isFollowed in
+            self.user.isFollowed = isFollowed
+            self.collectionView.reloadData()
+        }
+    }
     
     // MARK: - Helpers
     
@@ -112,19 +120,17 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
 extension ProfileController: ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
         
-        print("DEBUG: User is followed \(user.isFollowed) before button tap")
-        
         if user.isFollowed {
             // 팔로우한 상태라면 팔로우안한 상태로 바꿔주기
             UserSerivce.shared.unfollowUser(uid: user.uid) { err, ref in
                 self.user.isFollowed = false
-                print("DEBUG: User is followed \(self.user.isFollowed) after button tap")
+                self.collectionView.reloadData()
             }
         } else {
             // 팔로우한 상태가아니라면 팔로우한 상태로 바꿔주기
             UserSerivce.shared.followUser(uid: user.uid) { ref, err in
                 self.user.isFollowed = true
-                print("DEBUG: User is followed \(self.user.isFollowed) after button tap")
+                self.collectionView.reloadData()
             }
         }
     }
