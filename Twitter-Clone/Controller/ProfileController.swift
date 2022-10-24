@@ -39,6 +39,7 @@ class ProfileController: UICollectionViewController {
         configureCollectionView()
         fetchTweets()
         checkIfUserFollowed()
+        fetchUserStats()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +60,15 @@ class ProfileController: UICollectionViewController {
     func checkIfUserFollowed() {
         UserSerivce.shared.checkIfUserFollowed(uid: user.uid) { isFollowed in
             self.user.isFollowed = isFollowed
+            self.collectionView.reloadData()
+        }
+    }
+    
+    // 사용자의 Follower및 Following아 몇명인지 값을 반환해줌
+    func fetchUserStats() {
+        UserSerivce.shared.fetchUserStats(uid: user.uid) { stats in
+            // 가져온 상태를 user에 넣어주기
+            self.user.stats = stats
             self.collectionView.reloadData()
         }
     }

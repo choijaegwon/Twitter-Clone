@@ -16,6 +16,8 @@ struct User {
     let uid: String
     // 사용자가 팔로우 하는지 안하는지 확인하는 변수.
     var isFollowed = false
+    // 사용자를 가져온 후에만 사용할수 있어서 따로 지정해줌.
+    var stats: UserRelationStats?
     
     // 로그인한 사용자인지 아닌지 확인해주는 변수
     var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
@@ -34,4 +36,9 @@ struct User {
             self.profileImageUrl = url
         }
     }
+}
+
+struct UserRelationStats {
+    var followers: Int
+    var following: Int
 }

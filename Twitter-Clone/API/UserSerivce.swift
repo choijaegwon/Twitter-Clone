@@ -65,4 +65,19 @@ struct UserSerivce {
             completion(snapshot.exists())
         }
     }
+    
+    func fetchUserStats(uid: String, completion: @escaping(UserRelationStats) -> Void) {
+        // user-follower안 해당 uid 아래 모든 children(값들)을 개수를 새줘
+        REF_USERS_FOLLOWERS.child(uid).observeSingleEvent(of: .value) { snapshot in
+            let followers = snapshot.children.allObjects.count
+            
+            // user-following안 해당 uid 아래 모든 children(값들)을 개수를 새줘
+            REF_USERS_FOLLOWING.child(uid).observeSingleEvent(of: .value) { snapshot in
+                let following = snapshot.children.allObjects.count
+                
+                let stats = UserRelationStats(followers: followers, following: following)
+                completion(stats)
+            }
+        }
+    }
 }
