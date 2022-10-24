@@ -120,6 +120,12 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
 extension ProfileController: ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
         
+        // 사용자가 자기자신이면,
+        if user.isCurrentUser {
+            print("DEBUG: Show edit profile controller..")
+            return
+        }
+        
         if user.isFollowed {
             // 팔로우한 상태라면 팔로우안한 상태로 바꿔주기
             UserSerivce.shared.unfollowUser(uid: user.uid) { err, ref in
