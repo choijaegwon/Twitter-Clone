@@ -33,7 +33,7 @@ class TweetController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        print("DEBUG: Twwet caption is \(tweet.caption)")
+        print("DEBUG: Tweet caption is \(tweet.caption)")
     }
     
     func configureCollectionView() {

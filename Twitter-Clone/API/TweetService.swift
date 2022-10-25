@@ -10,7 +10,7 @@ import Firebase
 struct TweetService {
     static let shared = TweetService()
     
-    func uploadTwwet(caption: String, completion: @escaping(Error?, DatabaseReference) -> Void) {
+    func uploadTweet(caption: String, completion: @escaping(Error?, DatabaseReference) -> Void) {
         // 현재 사용자 uid 가져오기
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
