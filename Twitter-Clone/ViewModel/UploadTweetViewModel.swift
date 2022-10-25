@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum UploadTweetConfiguartion {
+enum UploadTweetConfiguration {
     case tweet
     // 답장으로하면 항상 다른 트윗으로 연결됨
     case reply(Tweet)
@@ -23,7 +23,7 @@ struct UploadTweetViewModel {
     // 회신하는 텍스트
     var replyText: String?
     
-    init(config: UploadTweetConfiguartion) {
+    init(config: UploadTweetConfiguration) {
         switch config {
         case .tweet:
             actionButtonTitle = "Tweet"

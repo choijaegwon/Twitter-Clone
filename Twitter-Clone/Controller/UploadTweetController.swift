@@ -14,7 +14,7 @@ class UploadTweetController: UIViewController {
     // MainView에서 넘어온 user를 담을 변수
     private let user: User
     // 그냥 트윗을 올리는건지 답장트윗을 하는건지 확인해주는 enum
-    private let config: UploadTweetConfiguartion
+    private let config: UploadTweetConfiguration
     private lazy var viewModel = UploadTweetViewModel(config: config)
     
     private lazy var actionButton: UIButton = {
@@ -54,7 +54,7 @@ class UploadTweetController: UIViewController {
     // MARK: - Lifecycel
     
     // user정보를 담아올 변수
-    init(user: User, config: UploadTweetConfiguartion) {
+    init(user: User, config: UploadTweetConfiguration) {
         self.user = user
         self.config = config
         super.init(nibName: nil, bundle: nil)
@@ -69,12 +69,13 @@ class UploadTweetController: UIViewController {
         
         configureUI()
         
-        switch config {
-        case .tweet:
-            print("DEBUG: Config is tweet")
-        case .reply(let tweet):
-            print("DEBUG: Replyung to \(tweet.caption)")
-        }
+        // 일단 없애라해서 주석처리했는데 왜없애는진모르겠다.
+//        switch config {
+//        case .tweet:
+//            print("DEBUG: Config is tweet")
+//        case .reply(let tweet):
+//            print("DEBUG: Replyung to \(tweet.caption)")
+//        }
     }
     
     // MARK: - Selectors
@@ -85,7 +86,7 @@ class UploadTweetController: UIViewController {
     
     @objc func handleUploadTweet() {
         guard let caption = captionTextView.text else { return }
-        TweetService.shared.uploadTweet(caption: caption) { error, ref in
+        TweetService.shared.uploadTweet(caption: caption, type: config) { error, ref in
             if let error = error {
                 print("DEBUG: Failed to upload tweet with error \(error.localizedDescription)")
                 return

@@ -10,7 +10,7 @@ import Firebase
 struct TweetService {
     static let shared = TweetService()
     
-    func uploadTweet(caption: String, completion: @escaping(Error?, DatabaseReference) -> Void) {
+    func uploadTweet(caption: String, type: UploadTweetConfiguration, completion: @escaping(Error?, DatabaseReference) -> Void) {
         // 현재 사용자 uid 가져오기
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
@@ -21,13 +21,19 @@ struct TweetService {
                       "retweets": 0,
                       "caption": caption] as [String : AnyObject]
         
-        // childByAutoId -> 자동으로 id부여 후 딕셔너리구조로 넣기, 그리고 completion(완료후 나머진 거기서 직접설정해!)
-        let ref = REF_TWEETS.childByAutoId()
-
-        ref.updateChildValues(values) { err, ref in
-            guard let tweetID = ref.key else { return }
-            // 트윗 업로드가 완료된후 그키를 이용해 사용자 트윗 구조를 업데이트한다.
-            REF_USERS_TWEETS.child(uid).updateChildValues([tweetID: 1], withCompletionBlock: completion)
+        // uploadTweet할때 type에 따라 firebase에 업로드하는 데이터 내용이 달라짐.
+        switch type {
+        case .tweet:
+            // childByAutoId -> 자동으로 id부여 후 딕셔너리구조로 넣기, 그리고 completion(완료후 나머진 거기서 직접설정해!)
+            REF_TWEETS.childByAutoId().updateChildValues(values) { err, ref in
+                guard let tweetID = ref.key else { return }
+                // 트윗 업로드가 완료된후 그키를 이용해 사용자 트윗 구조를 업데이트한다.
+                REF_USERS_TWEETS.child(uid).updateChildValues([tweetID: 1], withCompletionBlock: completion)
+            }
+        case .reply(let tweet):
+            // tweet-replies아래에 보고있는 tweet에대한 tweetID를추가하고 그 아래에 자동으로 id를붙여준후, 자신의 벨류값들을 업데이트해준다.
+            REF_TWEET_REPLIES.child(tweet.tweetID).childByAutoId()
+                .updateChildValues(values, withCompletionBlock: completion)
         }
     }
     
