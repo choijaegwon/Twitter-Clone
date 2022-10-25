@@ -111,7 +111,11 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
     
     // cell의 사이즈 조절
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 120)
+        // 선택한 cell을 넘겨주도록한다.
+        let viewModel = TweetViewModel(tweet: tweets[indexPath.row])
+        let height = viewModel.size(forWidth: view.frame.width).height
+        
+        return CGSize(width: view.frame.width, height: height + 72)
     }
 }
 

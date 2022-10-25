@@ -73,7 +73,10 @@ extension TweetController {
 extension TweetController: UICollectionViewDelegateFlowLayout {
     // 헤더의 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 250)
+        let viewModel = TweetViewModel(tweet: tweet)
+        let captionHeight = viewModel.size(forWidth: view.frame.width).height
+        
+        return CGSize(width: view.frame.width, height: captionHeight + 260)
     }
     
     // cell의 사이즈 조절

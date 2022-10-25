@@ -67,4 +67,18 @@ struct TweetViewModel {
         
         return attributedTitle
     }
+    
+    // label의 글자수에 따라 높이 반환해주는 함수
+    func size(forWidth width: CGFloat) -> CGSize {
+        // caption길이 측정하는 라벨
+        let measurementLabel = UILabel()
+        measurementLabel.text = tweet.caption
+        measurementLabel.numberOfLines = 0
+        // 단어단위로 끊어준다.
+        measurementLabel.lineBreakMode = .byWordWrapping
+        measurementLabel.translatesAutoresizingMaskIntoConstraints = false
+        measurementLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        // Layout Constrains를 기반으로 뷰의 사이즈를 계산한다.
+        return measurementLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    }
 }
