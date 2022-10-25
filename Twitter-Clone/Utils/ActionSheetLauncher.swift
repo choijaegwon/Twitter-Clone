@@ -17,6 +17,17 @@ class ActionSheetLauncher: NSObject {
     private let user: User
     private let tableView = UITableView()
     private var window: UIWindow?
+    // 뒷 배경 흐리게하기
+    private lazy var blackView: UIView = {
+        let view = UIView()
+        view.alpha = 0
+        view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleDismissal))
+        view.addGestureRecognizer(tap)
+        
+        return view
+    }()
     
     // MARK: - Lifecycle
 
@@ -25,6 +36,15 @@ class ActionSheetLauncher: NSObject {
         super.init()
         
         configureTabelView()
+    }
+    
+    // MARK: - Selectors
+    
+    @objc func handleDismissal() {
+        UIView.animate(withDuration: 0.5) {
+            self.blackView.alpha = 0
+            self.tableView.frame.origin.y += 300
+        }
     }
     
     // MARK: - Helpers
@@ -37,8 +57,18 @@ class ActionSheetLauncher: NSObject {
         guard let window = windowScene?.windows.first(where: { $0.isKeyWindow }) else { return }
         self.window = window
         
+        // 뒤에 흐린 검은색배경하기
+        window.addSubview(blackView)
+        blackView.frame = window.frame
+        
         window.addSubview(tableView)
-        tableView.frame = CGRect(x: 0, y: window.frame.height - 300, width: window.frame.width, height: 300)
+        tableView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: 300)
+        
+        UIView.animate(withDuration: 0.5) {
+            self.blackView.alpha = 1
+            // 0.5초동안 300으로 높이를 300으로 올리기(애니메이션 효과를 주기위함)
+            self.tableView.frame.origin.y -= 300
+        }
     }
     
     func configureTabelView() {
