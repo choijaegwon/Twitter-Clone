@@ -15,6 +15,12 @@ class TweetController: UICollectionViewController {
     // MARK: - Properties
     
     private let tweet: Tweet
+    // 답글이 담길때마다 화면을 리로드해준다.
+    private var replies = [Tweet]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     // MARK: - Lifecycle
     
@@ -33,8 +39,17 @@ class TweetController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        print("DEBUG: Tweet caption is \(tweet.caption)")
+        fetchReplies()
     }
+    
+    // MARK: - API
+    
+    func fetchReplies() {
+        TweetService.shared.fetchReplies(forTweet: tweet) { replies in
+            self.replies = replies
+        }
+    }
+
     
     func configureCollectionView() {
         collectionView.backgroundColor = .white
@@ -48,11 +63,13 @@ class TweetController: UICollectionViewController {
 
 extension TweetController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return replies.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
+        // cell의 tweet은 replies에서 가져오는데 indexPath.row순서대로 가져온다.
+        cell.tweet = replies[indexPath.row]
         return cell
     }
 }

@@ -10,7 +10,7 @@ import Firebase
 struct TweetService {
     static let shared = TweetService()
     
-    func uploadTweet(caption: String, type: UploadTweetConfiguration, completion: @escaping(Error?, DatabaseReference) -> Void) {
+    func uploadTweet(caption: String, type: UploadTweetConfiguration, completion: @escaping(DatabaseCompletion)) {
         // 현재 사용자 uid 가져오기
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
@@ -72,6 +72,26 @@ struct TweetService {
                     tweets.append(tweet)
                     completion(tweets)
                 }
+            }
+        }
+    }
+    
+    // 트윗의 답장을 가져오는 함수
+    func fetchReplies(forTweet tweet: Tweet, completion: @escaping([Tweet]) -> Void) {
+        var tweets = [Tweet]()
+        
+        // tweet-replies아래에 tweet.tweetID 아래있는 것들을 관찰하고 그값들을 snapshot으로 넘겨준다.
+        REF_TWEET_REPLIES.child(tweet.tweetID).observe(.childAdded) { snapshot in
+            guard let dictionary = snapshot.value as? [String: AnyObject] else { return }
+            // Tweet에 저장되어있는 uid불러오기
+            guard let uid = dictionary["uid"] as? String else { return }
+            let tweetID = snapshot.key
+            
+            // Tweet에서 유저 정보를 사용하기 위함
+            UserSerivce.shared.fetchUser(uid: uid) { user in
+                let tweet = Tweet(user: user, tweetID: tweetID, dictionary: dictionary)
+                tweets.append(tweet)
+                completion(tweets)
             }
         }
     }
