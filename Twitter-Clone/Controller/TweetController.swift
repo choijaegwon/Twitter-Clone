@@ -15,6 +15,8 @@ class TweetController: UICollectionViewController {
     // MARK: - Properties
     
     private let tweet: Tweet
+    // ActionSheetLauncher안에 show메서드를 사용하기 위한 변수
+    private let actionSheetLauncher: ActionSheetLauncher
     // 답글이 담길때마다 화면을 리로드해준다.
     private var replies = [Tweet]() {
         didSet {
@@ -28,6 +30,8 @@ class TweetController: UICollectionViewController {
     init(tweet: Tweet) {
         // Feed에서 받아온 tweet을 TweetController에있는 tweet에 넣어주기
         self.tweet = tweet
+        // tweet.user을 넣어준다.
+        self.actionSheetLauncher = ActionSheetLauncher(user: tweet.user)
         // tweet을 받아오기위해서 UICollectionViewFlowLayout()을 넣어준다.
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
@@ -81,6 +85,7 @@ extension TweetController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! TweetHeader
         header.tweet = tweet
+        header.delegate = self
         return header
     }
 }
@@ -99,5 +104,11 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
     // cell의 사이즈 조절
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 120)
+    }
+}
+
+extension TweetController: TweetHeaderDelegate {
+    func showActionSheet() {
+        actionSheetLauncher.show()
     }
 }
