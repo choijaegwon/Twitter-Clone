@@ -22,6 +22,7 @@
 		D46E46B029096E690036D684 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E46AF29096E690036D684 /* Notification.swift */; };
 		D46E46B22909734E0036D684 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E46B12909734E0036D684 /* NotificationService.swift */; };
 		D46E46B42909808E0036D684 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E46B32909808E0036D684 /* NotificationCell.swift */; };
+		D46E46B629098B7E0036D684 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E46B529098B7E0036D684 /* NotificationViewModel.swift */; };
 		D4A84EC02902795E000B183A /* UserSerivce.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A84EBF2902795E000B183A /* UserSerivce.swift */; };
 		D4A84EC2290286A8000B183A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A84EC1290286A8000B183A /* User.swift */; };
 		D4A84EC42902BFB4000B183A /* UploadTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A84EC32902BFB4000B183A /* UploadTweetController.swift */; };
@@ -68,6 +69,7 @@
 		D46E46AF29096E690036D684 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D46E46B12909734E0036D684 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		D46E46B32909808E0036D684 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		D46E46B529098B7E0036D684 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
 		D4A84EBF2902795E000B183A /* UserSerivce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSerivce.swift; sourceTree = "<group>"; };
 		D4A84EC1290286A8000B183A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D4A84EC32902BFB4000B183A /* UploadTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetController.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				D46E469F290570D80036D684 /* ProfileHeaderViewModel.swift */,
 				D46E46A7290829A40036D684 /* UploadTweetViewModel.swift */,
 				D46E46AD2909100E0036D684 /* ActionSheetViewModel.swift */,
+				D46E46B529098B7E0036D684 /* NotificationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				D4D424EB28FD8F9B00C136B3 /* AppDelegate.swift in Sources */,
 				D46E46AC2908FB360036D684 /* ActionSheetCell.swift in Sources */,
 				D4D4250F28FFDA6E00C136B3 /* Extensions.swift in Sources */,
+				D46E46B629098B7E0036D684 /* NotificationViewModel.swift in Sources */,
 				D4D4251229002AE600C136B3 /* LoginController.swift in Sources */,
 				D46E46A42906DF4E0036D684 /* TweetController.swift in Sources */,
 				D4A84ED029043948000B183A /* ProfileController.swift in Sources */,
