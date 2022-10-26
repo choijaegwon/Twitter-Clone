@@ -11,7 +11,7 @@ struct Tweet {
     let caption: String
     let tweetID: String
     let uid: String
-    let likes: Int
+    var likes: Int
     var timestamp: Date!
     let retweetCount: Int
     // user 속성까지 사용하기 위함

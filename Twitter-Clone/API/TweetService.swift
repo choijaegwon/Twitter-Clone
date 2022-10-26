@@ -95,4 +95,23 @@ struct TweetService {
             }
         }
     }
+    
+    func likeTweet(tweet: Tweet, completion: @escaping(DatabaseCompletion)) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
+        // tweets안에 tweet.tweetID아래에있는 likes값을 setValue(바꿔)해준다.
+        REF_TWEETS.child(tweet.tweetID).child("likes").setValue(likes)
+        
+        if tweet.didLike {
+            // unlike tweet
+        } else {
+            // like tweet
+            // user-likes아래에 사용자 uid아래에 tweet.tweetID를 추가하고
+            REF_USER_LIKES.child(uid).updateChildValues([tweet.tweetID: 1]) { err, ref in
+                // tweet-likes아래에 추가한 tweet.tweetID 아래에 uid 값을 추가해준다.
+                REF_TWEET_LIKES.child(tweet.tweetID).updateChildValues([uid: 1], withCompletionBlock: completion)
+            }
+        }
+    }
 }
