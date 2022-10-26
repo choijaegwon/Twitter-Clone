@@ -16,6 +16,7 @@ struct Tweet {
     let retweetCount: Int
     // user 속성까지 사용하기 위함
     var user: User
+    var didLike = false
     
     init(user: User, tweetID: String, dictionary: [String: Any]) {
         self.user = user
