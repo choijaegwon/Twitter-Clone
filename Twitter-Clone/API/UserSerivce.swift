@@ -60,7 +60,6 @@ struct UserSerivce {
         
         // user-following안 사용자의 uid아래에 받아온 uid(내가보고있는사람)가 있는지 확인
         REF_USERS_FOLLOWING.child(currentUid).child(uid).observeSingleEvent(of: .value) { snapshot in
-            print("DEBUG: Snapshot extists is \(snapshot.exists())")
             // 그 uid가 존재하면 true 존재하지않으면 false
             completion(snapshot.exists())
         }
