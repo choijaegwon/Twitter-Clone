@@ -15,7 +15,7 @@ struct Tweet {
     var timestamp: Date!
     let retweetCount: Int
     // user 속성까지 사용하기 위함
-    let user: User
+    var user: User
     
     init(user: User, tweetID: String, dictionary: [String: Any]) {
         self.user = user

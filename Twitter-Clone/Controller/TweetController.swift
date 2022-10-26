@@ -16,7 +16,7 @@ class TweetController: UICollectionViewController {
     
     private let tweet: Tweet
     // ActionSheetLauncher안에 show메서드를 사용하기 위한 변수
-    private let actionSheetLauncher: ActionSheetLauncher
+    private var actionSheetLauncher: ActionSheetLauncher!
     // 답글이 담길때마다 화면을 리로드해준다.
     private var replies = [Tweet]() {
         didSet {
@@ -30,8 +30,6 @@ class TweetController: UICollectionViewController {
     init(tweet: Tweet) {
         // Feed에서 받아온 tweet을 TweetController에있는 tweet에 넣어주기
         self.tweet = tweet
-        // tweet.user을 넣어준다.
-        self.actionSheetLauncher = ActionSheetLauncher(user: tweet.user)
         // tweet을 받아오기위해서 UICollectionViewFlowLayout()을 넣어준다.
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
@@ -109,6 +107,18 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
 
 extension TweetController: TweetHeaderDelegate {
     func showActionSheet() {
-        actionSheetLauncher.show()
+        // 내트윗이면
+        if tweet.user.isCurrentUser {
+            actionSheetLauncher = ActionSheetLauncher(user: tweet.user)
+            actionSheetLauncher.show()
+        } else {
+            // 팔로우했는지 안해는지확인하고, 그정보를 ActionSheetLauncher에 넘겨준다.
+            UserSerivce.shared.checkIfUserFollowed(uid: tweet.user.uid) { isFollowed in
+                var user = self.tweet.user
+                user.isFollowed = isFollowed
+                self.actionSheetLauncher = ActionSheetLauncher(user: user)
+                self.actionSheetLauncher.show()
+            }
+        }
     }
 }
