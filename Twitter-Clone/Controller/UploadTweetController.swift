@@ -68,14 +68,6 @@ class UploadTweetController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        
-        // 일단 없애라해서 주석처리했는데 왜없애는진모르겠다.
-//        switch config {
-//        case .tweet:
-//            print("DEBUG: Config is tweet")
-//        case .reply(let tweet):
-//            print("DEBUG: Replyung to \(tweet.caption)")
-//        }
     }
     
     // MARK: - Selectors
@@ -90,6 +82,11 @@ class UploadTweetController: UIViewController {
             if let error = error {
                 print("DEBUG: Failed to upload tweet with error \(error.localizedDescription)")
                 return
+            }
+            
+            // 답장일때만 알람가게하기
+            if case .reply(let tweet) = self.config {
+                NotificationService.shared.uploadNotification(type: .reply, tweet: tweet)
             }
             
             self.dismiss(animated: true, completion: nil)

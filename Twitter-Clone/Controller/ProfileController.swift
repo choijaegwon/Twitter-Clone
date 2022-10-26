@@ -147,6 +147,9 @@ extension ProfileController: ProfileHeaderDelegate {
             UserSerivce.shared.followUser(uid: user.uid) { ref, err in
                 self.user.isFollowed = true
                 self.collectionView.reloadData()
+                
+                // 팔로우할때만 알람을 보내주기
+                NotificationService.shared.uploadNotification(type: .follow, user: self.user)
             }
         }
     }
