@@ -105,6 +105,11 @@ struct TweetService {
         
         if tweet.didLike {
             // unlike tweet
+            // user-likes아래에 사용자 uid아래에 tweet.tweetID를 제거하고
+            REF_USER_LIKES.child(uid).child(tweet.tweetID).removeValue { err, ref in
+                // tweet-likes아래에 tweet.tweetID아래에 싫어요한 사용자만 제거한다.
+                REF_TWEET_LIKES.child(tweet.tweetID).child(uid).removeValue(completionBlock: completion)
+            }
         } else {
             // like tweet
             // user-likes아래에 사용자 uid아래에 tweet.tweetID를 추가하고
