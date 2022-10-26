@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import Firebase
 
 private let reuseIdentifier = "TweetCell"
 
@@ -32,6 +33,8 @@ class FeedController: UICollectionViewController {
         super.viewDidLoad()
         configureUI()
         fetchTweets()
+        // ====편하게 보기위해서 임시적으로 로그아웃버튼 추가==========
+        logoutButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,6 +67,43 @@ class FeedController: UICollectionViewController {
     }
     
     // MARK: - Heplers
+    
+    // ====편하게 보기위해서 임시적으로 로그아웃버튼 추가==========
+    func logoutButton() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+    }
+    
+    @objc func handleLogout() {
+        // declare alert controller
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // add alert logout action
+        alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { _ in
+            
+            do {
+                // attempt sign out
+                try Auth.auth().signOut()
+                
+                // present login controller
+                let loginVC = LoginController()
+                let navController = UINavigationController(rootViewController: loginVC)
+                navController.modalPresentationStyle = .fullScreen
+                self.present(navController, animated: true, completion: nil)
+                
+                print("로그아웃 성공")
+            
+            } catch {
+                // handle error
+                print("Falied to sign out")
+            }
+        }))
+        
+        // add cancel action
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    // ====편하게 보기위해서 임시적으로 로그아웃버튼 추가==========여기까지
     
     func configureUI() {
         view.backgroundColor = .white
