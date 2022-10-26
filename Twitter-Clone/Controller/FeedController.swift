@@ -143,6 +143,10 @@ extension FeedController: TweetCellDelegate {
             cell.tweet?.didLike.toggle()
             let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
             cell.tweet?.likes = likes
+            
+            // 트윗에 좋아요가 표시되는 경우만 알람옴
+            guard !tweet.didLike else { return }
+            NotificationService.shared.uploadNotification(type: .like, tweet: tweet)
         }
     }
     
