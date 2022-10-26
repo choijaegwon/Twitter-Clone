@@ -46,6 +46,20 @@ class FeedController: UICollectionViewController {
         TweetService.shared.fetchTweets { tweets in
             // 넘어온 정보를 [tweets]배열에 넘겨주기
             self.tweets = tweets
+            // 사용자가 그 tweet을 좋아하는지 안하는지 확인하는 메서드
+            self.checkIfUserLikedTweets(tweets)
+        }
+    }
+    
+    func checkIfUserLikedTweets(_ tweets: [Tweet]) {
+        // index번호를 얻고 그 얻은 index번호를 이용해서
+        for (index, tweet) in tweets.enumerated() {
+            TweetService.shared.checkIfUserLikedTweet(tweet) { didLike in
+                // didLike자체가 false이기때문에 좋아요가 눌렸으면 그냥 넘어가고 안눌렸으면 아래로 넘어가기,
+                guard didLike == true else { return }
+                // 여기에서 index번째 tweet의 didLike을 true로 바꿔주기.
+                self.tweets[index].didLike = true
+            }
         }
     }
     

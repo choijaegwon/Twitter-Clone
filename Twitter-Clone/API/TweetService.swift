@@ -119,4 +119,15 @@ struct TweetService {
             }
         }
     }
+    
+    // UserService의 checkIfUserFollowed과 같은 방식이다.
+    func checkIfUserLikedTweet(_ tweet: Tweet, completion: @escaping(Bool) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        // user-likes아래에 내 uid를 찾아간후, 그아래 내가보고있는 tweet의tweetID 값을 찾는다
+        REF_USER_LIKES.child(uid).child(tweet.tweetID).observeSingleEvent(of: .value) { snapshot in
+            // 그다음 그 snapshot값이 존재하면 true 존재하지않으면 false를 반환해준다.
+            completion(snapshot.exists())
+        }
+    }
 }
