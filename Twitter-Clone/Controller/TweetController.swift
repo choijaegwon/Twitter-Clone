@@ -14,7 +14,7 @@ class TweetController: UICollectionViewController {
     
     // MARK: - Properties
     
-    private let tweet: Tweet
+    private var tweet: Tweet
     // ActionSheetLauncher안에 show메서드를 사용하기 위한 변수
     private var actionSheetLauncher: ActionSheetLauncher!
     // 답글이 담길때마다 화면을 리로드해준다.
@@ -42,6 +42,13 @@ class TweetController: UICollectionViewController {
         super.viewDidLoad()
         configureCollectionView()
         fetchReplies()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        TweetService.shared.checkIfUserLikedTweet(tweet) { didLike in
+            self.tweet.didLike = didLike
+        }
     }
     
     // MARK: - API
