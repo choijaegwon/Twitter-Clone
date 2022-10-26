@@ -52,12 +52,19 @@ class TweetController: UICollectionViewController {
         }
     }
 
-    
+    // MARK: - Helpers
+
     func configureCollectionView() {
         collectionView.backgroundColor = .white
         
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.register(TweetHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+    }
+    
+    fileprivate func showActionSheet(forUser user: User) {
+        actionSheetLauncher = ActionSheetLauncher(user: user)
+        actionSheetLauncher.delegate = self
+        actionSheetLauncher.show()
     }
 }
 
@@ -105,20 +112,28 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - TweetHeaderDelegate
+
 extension TweetController: TweetHeaderDelegate {
     func showActionSheet() {
         // 내트윗이면
         if tweet.user.isCurrentUser {
-            actionSheetLauncher = ActionSheetLauncher(user: tweet.user)
-            actionSheetLauncher.show()
+            showActionSheet(forUser: tweet.user)
         } else {
             // 팔로우했는지 안해는지확인하고, 그정보를 ActionSheetLauncher에 넘겨준다.
             UserSerivce.shared.checkIfUserFollowed(uid: tweet.user.uid) { isFollowed in
                 var user = self.tweet.user
                 user.isFollowed = isFollowed
-                self.actionSheetLauncher = ActionSheetLauncher(user: user)
-                self.actionSheetLauncher.show()
+                self.showActionSheet(forUser: user)
             }
         }
+    }
+}
+
+// MARK: - ActionSheetLauncherDelegate
+
+extension TweetController: ActionSheetLauncherDelegate {
+    func didSelect(option: ActionSheetOptions) {
+        print("DEBUG: Option in controller is \(option.description)")
     }
 }

@@ -9,6 +9,10 @@ import UIKit
 
 private let reuseIdentifier = "ActionSheetCell"
 
+protocol ActionSheetLauncherDelegate: AnyObject {
+    func didSelect(option: ActionSheetOptions)
+}
+
 class ActionSheetLauncher: NSObject {
     
     // MARK: - Properties
@@ -18,6 +22,8 @@ class ActionSheetLauncher: NSObject {
     private let tableView = UITableView()
     private var window: UIWindow?
     private lazy var viewModel = ActionSheetViewModel(user: user)
+    weak var delegate: ActionSheetLauncherDelegate?
+    private var tableViewHeight: CGFloat?
     
     // 뒷 배경 흐리게하기
     private lazy var blackView: UIView = {
@@ -73,6 +79,14 @@ class ActionSheetLauncher: NSObject {
     
     // MARK: - Helpers
     
+    // true면 actionSheet를 보여주고, false면 내리기
+    func showTableView(_ shouldShow: Bool) {
+        guard let window = window else { return }
+        guard let height = tableViewHeight else { return }
+        let y = shouldShow ? window.frame.height - height : window.frame.height
+        tableView.frame.origin.y = y
+    }
+    
     func show() {
         let scenes = UIApplication.shared.connectedScenes
         let windowScene = scenes.first as? UIWindowScene
@@ -85,12 +99,12 @@ class ActionSheetLauncher: NSObject {
         
         window.addSubview(tableView)
         let height = CGFloat(viewModel.options.count * 60) + 100
+        self.tableViewHeight = height
         tableView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
         
         UIView.animate(withDuration: 0.5) {
             self.blackView.alpha = 1
-            // 0.5초동안 300으로 높이를 300으로 올리기(애니메이션 효과를 주기위함)
-            self.tableView.frame.origin.y -= height
+            self.showTableView(true)
         }
     }
     
@@ -107,6 +121,8 @@ class ActionSheetLauncher: NSObject {
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension ActionSheetLauncher: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.options.count
@@ -119,6 +135,8 @@ extension ActionSheetLauncher: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension ActionSheetLauncher: UITableViewDelegate {
     
     // 특정 섹션의 footerView 요청
@@ -129,5 +147,16 @@ extension ActionSheetLauncher: UITableViewDelegate {
     // 특정 섹션의 footerView 높이 지정
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 60
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let option = viewModel.options[indexPath.row]
+        
+        UIView.animate(withDuration: 0.5) {
+            self.blackView.alpha = 0
+            self.showTableView(false)
+        } completion: { _ in
+            self.delegate?.didSelect(option: option)
+        }
     }
 }
