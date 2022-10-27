@@ -189,7 +189,19 @@ extension ProfileController: ProfileHeaderDelegate {
         
         // 사용자가 자기자신이면,
         if user.isCurrentUser {
-            print("DEBUG: Show edit profile controller..")
+            let controller = EditProfileController(user: user)
+            let nav = UINavigationController(rootViewController: controller)
+            
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .twitterBlue
+            // 타이틀 색상변경
+            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            nav.navigationBar.standardAppearance = appearance
+            nav.navigationBar.scrollEdgeAppearance = appearance
+            
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
             return
         }
         
