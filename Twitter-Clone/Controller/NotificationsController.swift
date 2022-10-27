@@ -27,6 +27,12 @@ class NotificationsController: UITableViewController {
         fetchNotifications()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
+    }
+    
     // MARK: - API
     
     func fetchNotifications() {
@@ -48,6 +54,8 @@ class NotificationsController: UITableViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension NotificationsController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notifications.count
@@ -56,6 +64,34 @@ extension NotificationsController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationCell
         cell.notification = notifications[indexPath.row]
+        cell.delegate = self
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension NotificationsController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 알람 정보 가져오기
+        let notification = notifications[indexPath.row]
+        guard let tweetID = notification.tweetID else { return }
+        
+        // 트윗알람을 누르면 그트윗으로 이동하기.
+        TweetService.shared.fetchTweet(withTweetID: tweetID) { tweet in
+            let controller = TweetController(tweet: tweet)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+}
+
+// MARK: - NotificationCellDelegate
+
+extension NotificationsController: NotificationCellDelegate {
+    func didTapProfileImage(_ cell: NotificationCell) {
+        guard let user = cell.notification?.user else { return }
+        
+        let controller = ProfileController(user: user)
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
