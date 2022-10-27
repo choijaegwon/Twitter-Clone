@@ -33,10 +33,22 @@ class NotificationsController: UITableViewController {
         navigationController?.navigationBar.barStyle = .default
     }
     
+    // MARK: - Selectors
+
+    @objc func handleRefresh() {
+        // 새로고침할때마다 Notifications 가져오기
+        fetchNotifications()
+    }
+    
     // MARK: - API
     
     func fetchNotifications() {
+        // 가져온후 새로고침 끝내기
+        refreshControl?.endRefreshing()
+        
         NotificationService.shared.fetchNotification { notifications in
+            // 가져온후 새로고침 끝내기
+            self.refreshControl?.endRefreshing()
             self.notifications = notifications
             self.checkIfUserIsFollowed(notifications: notifications)
             
@@ -70,6 +82,11 @@ class NotificationsController: UITableViewController {
         tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 60
         tableView.separatorStyle = .none
+        
+        // 아래로 스와이프하면 새로고침
+        let refreshControl = UIRefreshControl()
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     }
 }
 
