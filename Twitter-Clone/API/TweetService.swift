@@ -32,8 +32,12 @@ struct TweetService {
             }
         case .reply(let tweet):
             // tweet-replies아래에 보고있는 tweet에대한 tweetID를추가하고 그 아래에 자동으로 id를붙여준후, 자신의 벨류값들을 업데이트해준다.
-            REF_TWEET_REPLIES.child(tweet.tweetID).childByAutoId()
-                .updateChildValues(values, withCompletionBlock: completion)
+            REF_TWEET_REPLIES.child(tweet.tweetID).childByAutoId().updateChildValues(values) { err, ref in
+                // replyKey란? 위에서 자동으로 넣은값(childByAutoId)이다.
+                guard let replyKey = ref.key else { return }
+                // user-replies아래에 uid를 추가하고, 거기에 [tweet.tweetID: replyKey]를 추가해준다.
+                REF_USER_REPLIES.child(uid).updateChildValues([tweet.tweetID: replyKey], withCompletionBlock: completion)
+            }
         }
     }
     
@@ -78,6 +82,31 @@ struct TweetService {
             UserSerivce.shared.fetchUser(uid: uid) { user in
                 let tweet = Tweet(user: user, tweetID: tweetID, dictionary: dictionary)
                 completion(tweet)
+            }
+        }
+    }
+    
+    func fetchReplies(forUser user: User, completion: @escaping([Tweet]) -> Void) {
+        var replies = [Tweet]()
+        // user-replies아래에 uid에있는걸관찰할건데
+        REF_USER_REPLIES.child(user.uid).observe(.childAdded) { snapshot in
+            // key값은 tweet.tweetID이고
+            let tweetKey = snapshot.key
+            // value값은 그 트윗아이디 아래있는 답장트윗이다.
+            guard let replykey = snapshot.value as? String else { return }
+            
+            // tweet-replies아래에 tweetKey아래 replykey아래에 있는걸 전부다 가져온다.
+            REF_TWEET_REPLIES.child(tweetKey).child(replykey).observeSingleEvent(of: .value) { snapshot in
+                guard let dictionary = snapshot.value as? [String: Any] else { return }
+                // Tweet에 저장되어있는 uid불러오기
+                guard let uid = dictionary["uid"] as? String else { return }
+                
+                // Tweet에서 유저 정보를 사용하기 위함
+                UserSerivce.shared.fetchUser(uid: uid) { user in
+                    let tweet = Tweet(user: user, tweetID: tweetKey, dictionary: dictionary)
+                    replies.append(tweet)
+                    completion(replies)
+                }
             }
         }
     }
