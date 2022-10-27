@@ -10,6 +10,7 @@ import UIKit
 protocol ProfileHeaderDelegate: AnyObject {
     func handleDismissal()
     func handleEditProfileFollow(_ header: ProfileHeader)
+    func didSelect(filter: ProfileFilterOptions)
 }
 
 class ProfileHeader: UICollectionReusableView {
@@ -188,8 +189,12 @@ class ProfileHeader: UICollectionReusableView {
 // MARK: - ProfileFilterViewDelegate
 
 extension ProfileHeader: ProfileFilterViewDelegate {
-    // 넘겨받은 indexPath정보를 가지고 xPosition을 잡고 움직이기(파란색 바가 움직임)
-    func filterView(_ view: ProfileFilterView, didSelect indexPath: IndexPath) {
-
+    func filterView(_ view: ProfileFilterView, didSelect index: Int) {
+        // 필터를 사용하여 헤더에서 컨트롤러로 작업을 위임하기 위함
+        guard let filter = ProfileFilterOptions(rawValue: index) else { return }
+        
+        // 전체로 ProfileFilterView -> ProfileHeader -> ProfileController 순서대로 delegate를통해 기능전달
+        // 여기선 ProfileFilterView에서 위임받고 ProfileController로 전달해줌.
+        delegate?.didSelect(filter: filter)
     }
 }

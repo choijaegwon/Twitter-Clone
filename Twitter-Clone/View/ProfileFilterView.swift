@@ -11,7 +11,7 @@ private let reuseIdentifier = "ProfileFilterCell"
 
 // ProfileFilterCell이 클릭되었을때 underlineView이 움직이는지 아닌지
 protocol ProfileFilterViewDelegate: AnyObject {
-    func filterView(_ view: ProfileFilterView, didSelect indexPath: IndexPath)
+    func filterView(_ view: ProfileFilterView, didSelect index: Int)
 }
 
 class ProfileFilterView: UIView {
@@ -91,7 +91,10 @@ extension ProfileFilterView: UICollectionViewDelegate {
             self.underlineView.frame.origin.x = xPosition
         }
         
-        delegate?.filterView(self, didSelect: indexPath)
+        // 필터 표시줄에서 프로필 헤더에 대한 작업을 위임하기.
+        // 전체로 ProfileFilterView -> ProfileHeader -> ProfileController 순서대로 delegate를통해 기능전달
+        // 여기선 ProfileHeader에 기능을 전달
+        delegate?.filterView(self, didSelect: indexPath.row)
     }
 }
 

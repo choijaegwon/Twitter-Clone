@@ -146,6 +146,12 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
 // MARK: - ProfileHeaderDelegate
 
 extension ProfileController: ProfileHeaderDelegate {
+    func didSelect(filter: ProfileFilterOptions) {
+        // 전체로 ProfileFilterView -> ProfileHeader -> ProfileController 순서대로 delegate를통해 기능전달
+        // 여기선 ProfileHeader에서 위임받음
+        self.selectedFilter = filter
+    }
+    
     func handleEditProfileFollow(_ header: ProfileHeader) {
         
         // 사용자가 자기자신이면,
