@@ -102,6 +102,24 @@ struct TweetService {
         }
     }
     
+    func fetchLikes(forUser user: User, completion: @escaping([Tweet]) -> Void) {
+        var tweets = [Tweet]()
+        
+        // user-likes아래 user.uid아래 있는
+        REF_USER_LIKES.child(user.uid).observe(.childAdded) { snapshot in
+            // tweetID 을 가지고 넘겨준다.
+            let tweetID = snapshot.key
+            // 그걸기준으로 트윗을 가져온후, tweets배열에 넣고 반환해준다.
+            self.fetchTweet(withTweetID: tweetID) { likedTweet in
+                var tweet = likedTweet
+                tweet.didLike = true
+                
+                tweets.append(tweet)
+                completion(tweets)
+            }
+        }
+    }
+    
     func likeTweet(tweet: Tweet, completion: @escaping(DatabaseCompletion)) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
