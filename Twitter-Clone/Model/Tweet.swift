@@ -17,6 +17,10 @@ struct Tweet {
     var user: User
     var didLike = false
     var replyingTo: String?
+    // TweetCell에있는 replyLabel 보여줄지말지 결정함
+    var isReply: Bool {
+        return replyingTo != nil
+    }
     
     init(user: User, tweetID: String, dictionary: [String: Any]) {
         self.user = user

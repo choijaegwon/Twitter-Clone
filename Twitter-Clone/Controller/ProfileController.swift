@@ -86,10 +86,6 @@ class ProfileController: UICollectionViewController {
         TweetService.shared.fetchReplies(forUser: user) { tweets in
             // 가져온걸 tweets에 넣어준다.
             self.replies = tweets
-            
-            self.replies.forEach { reply in
-                print("DEBUG: Replying to \(reply.replyingTo)")
-            }
         }
     }
 
@@ -163,9 +159,14 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // 선택한 cell을 넘겨주도록한다.
         let viewModel = TweetViewModel(tweet: currentDataSource[indexPath.row])
-        let height = viewModel.size(forWidth: view.frame.width).height
+        var height = viewModel.size(forWidth: view.frame.width).height + 72
         
-        return CGSize(width: view.frame.width, height: height + 72)
+        // 가져온 트윗이 답장상태이라면, 높이를 20 더해줘서 보여준다.
+        if currentDataSource[indexPath.row].isReply {
+            height += 20
+        }
+        
+        return CGSize(width: view.frame.width, height: height)
     }
 }
 
