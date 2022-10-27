@@ -184,8 +184,6 @@ class ProfileHeader: UICollectionReusableView {
         guard let user = user else { return }
         let viewModel = ProfileHeaderViewModel(user: user)
         
-        print("DEBUG: Did set called for user in profile header..")
-        
         profileImageView.sd_setImage(with: user.profileImageUrl)
         
         editProfileFollwButton.setTitle(viewModel.actionButtonTitle, for: .normal)
