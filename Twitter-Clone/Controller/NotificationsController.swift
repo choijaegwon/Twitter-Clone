@@ -108,7 +108,20 @@ extension NotificationsController {
 
 extension NotificationsController: NotificationCellDelegate {
     func didTapFollow(_ cell: NotificationCell) {
-        print("DEBUG: Handle follow tap...")
+        guard let user = cell.notification?.user else { return }
+        
+        // user.isFollowed는 현재상태를 가져옴 true면 언팔로우하기, false면 팔로우하기
+        if user.isFollowed {
+            UserSerivce.shared.unfollowUser(uid: user.uid) { err, ref in
+                // cell의 UI 바꿔주기
+                cell.notification?.user.isFollowed = false
+            }
+        } else {
+            UserSerivce.shared.followUser(uid: user.uid) { err, ref in
+                // cell의 UI 바꿔주기
+                cell.notification?.user.isFollowed = true
+            }
+        }
     }
     
     func didTapProfileImage(_ cell: NotificationCell) {
