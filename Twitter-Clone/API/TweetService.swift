@@ -102,11 +102,12 @@ struct TweetService {
                 guard let dictionary = snapshot.value as? [String: Any] else { return }
                 // Tweet에 저장되어있는 uid불러오기
                 guard let uid = dictionary["uid"] as? String else { return }
+                let replyID = snapshot.key
                 
                 // Tweet에서 유저 정보를 사용하기 위함
                 UserSerivce.shared.fetchUser(uid: uid) { user in
-                    let tweet = Tweet(user: user, tweetID: tweetKey, dictionary: dictionary)
-                    replies.append(tweet)
+                    let reply = Tweet(user: user, tweetID: replyID, dictionary: dictionary)
+                    replies.append(reply)
                     completion(replies)
                 }
             }

@@ -144,6 +144,12 @@ extension ProfileController {
         header.delegate = self
         return header
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Feed에 있는 tweet을 indexPath.row을 통해 몇번째 tweet이 클릭되었는지 확인후, 그걸 넘겨준다.
+        let controller = TweetController(tweet: currentDataSource[indexPath.row])
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

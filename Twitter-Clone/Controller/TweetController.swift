@@ -46,6 +46,8 @@ class TweetController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
         TweetService.shared.checkIfUserLikedTweet(tweet) { didLike in
             self.tweet.didLike = didLike
         }
@@ -54,6 +56,8 @@ class TweetController: UICollectionViewController {
     // MARK: - API
     
     func fetchReplies() {
+        print("DEBUG: Tweet ID is \(tweet.tweetID)")
+        
         TweetService.shared.fetchReplies(forTweet: tweet) { replies in
             self.replies = replies
         }
