@@ -15,11 +15,11 @@ struct TweetService {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
         // 업로드할 구조
-        let values = ["uid": uid,
+        var values = ["uid": uid,
                       "timestamp": Int(NSDate().timeIntervalSince1970),
                       "likes": 0,
                       "retweets": 0,
-                      "caption": caption] as [String : AnyObject]
+                      "caption": caption] as [String : Any]
         
         // uploadTweet할때 type에 따라 firebase에 업로드하는 데이터 내용이 달라짐.
         switch type {
@@ -31,6 +31,8 @@ struct TweetService {
                 REF_USERS_TWEETS.child(uid).updateChildValues([tweetID: 1], withCompletionBlock: completion)
             }
         case .reply(let tweet):
+            values["replyingTo"] = tweet.user.username
+            
             // tweet-replies아래에 보고있는 tweet에대한 tweetID를추가하고 그 아래에 자동으로 id를붙여준후, 자신의 벨류값들을 업데이트해준다.
             REF_TWEET_REPLIES.child(tweet.tweetID).childByAutoId().updateChildValues(values) { err, ref in
                 // replyKey란? 위에서 자동으로 넣은값(childByAutoId)이다.

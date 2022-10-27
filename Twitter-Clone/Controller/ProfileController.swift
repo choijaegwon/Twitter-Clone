@@ -86,6 +86,10 @@ class ProfileController: UICollectionViewController {
         TweetService.shared.fetchReplies(forUser: user) { tweets in
             // 가져온걸 tweets에 넣어준다.
             self.replies = tweets
+            
+            self.replies.forEach { reply in
+                print("DEBUG: Replying to \(reply.replyingTo)")
+            }
         }
     }
 
