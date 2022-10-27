@@ -43,14 +43,25 @@ class FeedController: UICollectionViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
+    // MARK: - Selectors
+    
+    @objc func handleRefresh() {
+        fetchTweets()
+    }
+    
     // MARK: - API
     
     func fetchTweets() {
+        collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchTweets { tweets in
             // 넘어온 정보를 [tweets]배열에 넘겨주기
             self.tweets = tweets
             // 사용자가 그 tweet을 좋아하는지 안하는지 확인하는 메서드
             self.checkIfUserLikedTweets(tweets)
+            // 트윗을 시간순서대로 정렬하기
+            self.tweets = tweets.sorted(by: { $0.timestamp > $1.timestamp })
+            
+            self.collectionView.refreshControl?.endRefreshing()
         }
     }
     
@@ -116,6 +127,11 @@ class FeedController: UICollectionViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
+        
+        // 아래로당기면 새로고침
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     func configureLeftBarButton() {

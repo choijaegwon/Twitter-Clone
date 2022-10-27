@@ -43,24 +43,37 @@ struct TweetService {
         }
     }
     
+    // 트윗가져오기
     func fetchTweets(completion: @escaping([Tweet]) -> Void) {
         var tweets = [Tweet]()
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+  
+        // 내가 팔로우한 트윗만 가져오는 코드
+        REF_USERS_FOLLOWING.child(currentUid).observe(.childAdded) { snapshot in
+            let followingUid = snapshot.key
+            
+            REF_USERS_TWEETS.child(followingUid).observe(.childAdded) { snapshot in
+                let tweetID = snapshot.key
+                
+                self.fetchTweet(withTweetID: tweetID) { tweet in
+                    tweets.append(tweet)
+                    completion(tweets)
+                }
+            }
+        }
         
-        REF_TWEETS.observe(.childAdded) { snapshot in
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
-            // Tweet에 저장되어있는 uid불러오기
-            guard let uid = dictionary["uid"] as? String else { return }
+        // 내트윗을 가져오는 코드
+        REF_USERS_TWEETS.child(currentUid).observe(.childAdded) { snapshot in
             let tweetID = snapshot.key
-
-            // Tweet에서 유저 정보를 사용하기 위함
-            UserSerivce.shared.fetchUser(uid: uid) { user in
-                let tweet = Tweet(user: user, tweetID: tweetID, dictionary: dictionary)
+            
+            self.fetchTweet(withTweetID: tweetID) { tweet in
                 tweets.append(tweet)
                 completion(tweets)
             }
         }
     }
     
+    // 특정 사용자에 대한 트윗가져오기
     func fetchTweets(forUser user: User, completion: @escaping([Tweet]) -> Void) {
         var tweets = [Tweet]()
         REF_USERS_TWEETS.child(user.uid).observe(.childAdded) { snapshot in
