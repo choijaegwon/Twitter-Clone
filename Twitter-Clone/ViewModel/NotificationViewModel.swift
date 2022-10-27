@@ -53,6 +53,16 @@ struct NotificationViewModel {
         return user.profileImageUrl
     }
     
+    // 알람이 팔로우인 경우에만 팔로우버튼이 표시되도록하기
+    var shouldHideFollowButton: Bool {
+        // follow타입이 아니면 ture 반환해준다.
+        return type != .follow
+    }
+    
+    var followButtonTest: String {
+        return user.isFollowed ? "Following" : "Follow"
+    }
+    
     init(notification: Notification) {
         self.notification = notification
         self.type = notification.type
