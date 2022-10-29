@@ -190,6 +190,7 @@ extension ProfileController: ProfileHeaderDelegate {
         // 사용자가 자기자신이면,
         if user.isCurrentUser {
             let controller = EditProfileController(user: user)
+            controller.delegate = self
             let nav = UINavigationController(rootViewController: controller)
             
             let appearance = UINavigationBarAppearance()
@@ -225,5 +226,15 @@ extension ProfileController: ProfileHeaderDelegate {
     
     func handleDismissal() {
         navigationController?.popViewController(animated: true)
+    }
+}
+
+// MARK: - EditProfileControllerDelegate
+
+extension ProfileController: EditProfileControllerDelegate {
+    func controller(_ controller: EditProfileController, wantsToUpdate user: User) {
+        controller.dismiss(animated: true, completion: nil)
+        self.user = user
+        self.collectionView.reloadData()
     }
 }
