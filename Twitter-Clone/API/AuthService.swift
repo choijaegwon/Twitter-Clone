@@ -58,6 +58,7 @@ struct AuthService {
                     // REF_USERS란? 저장할 경로 Database.database().reference()까진 같고,
                     // 그뒤 "user"란 키를 추가할건데 그걸 .child(uid)에 추가할 것이다. -> REF_USERS.child(uid)로 변경
                     // 추가하는 메서드 .updateChildValues이고, values을 넣어준다.
+                    REF_USER_USERNAMES.updateChildValues([username: uid])
                     REF_USERS.child(uid).updateChildValues(values, withCompletionBlock: completion)
                 }
             }
