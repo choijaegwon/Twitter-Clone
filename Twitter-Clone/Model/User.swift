@@ -18,6 +18,7 @@ struct User {
     var isFollowed = false
     // 사용자를 가져온 후에만 사용할수 있어서 따로 지정해줌.
     var stats: UserRelationStats?
+    var bio: String?
     
     // 로그인한 사용자인지 아닌지 확인해주는 변수
     var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
@@ -28,6 +29,7 @@ struct User {
         self.fullname = dictionary["fullname"] as? String ?? ""
         self.email = dictionary["email"] as? String ?? ""
         self.username = dictionary["username"] as? String ?? ""
+        self.bio = dictionary["bio"] as? String ?? ""
         
         if let profileImageUrlString = dictionary["profileImageUrl"] as? String {
             // 주소문자열을 URL로 바꿔주기.
