@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol EditProfileCellDelegate: AnyObject {
+    func updateUserInfo(_ cell: EditProfileCell)
+}
+
 class EditProfileCell: UITableViewCell {
     
     // MARK: - Properties
@@ -16,6 +20,8 @@ class EditProfileCell: UITableViewCell {
             configure()
         }
     }
+    
+    weak var delegate: EditProfileCellDelegate?
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -58,6 +64,9 @@ class EditProfileCell: UITableViewCell {
         
         contentView.addSubview(bioTextView)
         bioTextView.anchor(top: topAnchor, left: titleLabel.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingRight: 8)
+        
+        // 텍스트가 변경될 때마다 호출하기
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateUserInfo), name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -67,7 +76,7 @@ class EditProfileCell: UITableViewCell {
     // MARK: - Selectors
     
     @objc func handleUpdateUserInfo() {
-        
+        delegate?.updateUserInfo(self)
     }
     
     // MARK: - Helpers

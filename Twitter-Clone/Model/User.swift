@@ -9,9 +9,9 @@ import Foundation
 import Firebase
 
 struct User {
-    let fullname: String
+    var fullname: String
     let email: String
-    let username: String
+    var username: String
     var profileImageUrl: URL?
     let uid: String
     // 사용자가 팔로우 하는지 안하는지 확인하는 변수.
