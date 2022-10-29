@@ -25,6 +25,12 @@ class EditProfileController: UITableViewController {
     // 사용자가 프로필을 편집했는지 안했는지 여부
     private var userInfoChanged = false
     
+    // 프로필 이미지를 변경했는지 여부
+    private var imageChanged: Bool {
+        // 선택한 이미지에 값이 있으면 이미지가 변경되었음을 의미한다.
+        return selectedImage != nil
+    }
+    
     private var selectedImage: UIImage? {
         didSet {
             headerView.profileImageVIew.image = selectedImage
@@ -57,12 +63,40 @@ class EditProfileController: UITableViewController {
     }
     
     @objc func handleDone() {
+        view.endEditing(true)
+        // 이미지를바꾸거나 유저정보를 바꾸는 경우에만 실행
+        guard imageChanged || userInfoChanged else { return}
         updateUserData()
     }
+    
     // MARK: - API
     
     func updateUserData() {
-        UserSerivce.shared.saveUserData(user: user) { err, ref in
+        if imageChanged && !userInfoChanged {
+            print("DEBUG: Changed image and not data")
+            updateProfileImage()
+        }
+        
+        if userInfoChanged && !imageChanged {
+            print("DEBUG: Changed data and not image..")
+            UserSerivce.shared.saveUserData(user: user) { err, ref in
+                self.delegate?.controller(self, wantsToUpdate: self.user)
+            }
+        }
+        
+        if userInfoChanged && imageChanged {
+            print("DEBUG: Changed both..")
+            UserSerivce.shared.saveUserData(user: user) { err, ref in
+                self.updateProfileImage()
+            }
+        }
+    }
+    
+    func updateProfileImage() {
+        guard let image = selectedImage else { return }
+        
+        UserSerivce.shared.updateProfileImage(image: image) { profileImageUrl in
+            self.user.profileImageUrl = profileImageUrl
             self.delegate?.controller(self, wantsToUpdate: self.user)
         }
     }
@@ -76,7 +110,6 @@ class EditProfileController: UITableViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCandle))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDone))
-        navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
     func configureTabelView() {

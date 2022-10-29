@@ -80,6 +80,30 @@ struct UserSerivce {
         }
     }
     
+    func updateProfileImage(image: UIImage, completion: @escaping(URL?) -> Void) {
+        // 사진 데이터 변환
+        guard let imageData = image.jpegData(compressionQuality: 0.3) else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let filename = NSUUID().uuidString
+        // 업로드경로
+        let ref = STORAGE_PROFILE_IMAGES.child(filename)
+        
+        // 이미지 업로드하기
+        ref.putData(imageData, metadata: nil) { meta, error in
+            ref.downloadURL { url, error in
+                // 프로필url얻고
+                guard let profileImageUrl = url?.absoluteString else { return }
+                // 값에 넣어서
+                let values = ["profileImageUrl": profileImageUrl]
+                
+                // 업데이트해주기
+                REF_USERS.child(uid).updateChildValues(values) { err, ref in
+                    completion(url)
+                }
+            }
+        }
+    }
+    
     func saveUserData(user: User, completion: @escaping(DatabaseCompletion)) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         

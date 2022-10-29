@@ -63,7 +63,7 @@ class EditProfileCell: UITableViewCell {
         infoTextField.anchor(top: topAnchor, left: titleLabel.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingRight: 8)
         
         contentView.addSubview(bioTextView)
-        bioTextView.anchor(top: topAnchor, left: titleLabel.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingRight: 8)
+        bioTextView.anchor(top: topAnchor, left: titleLabel.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 14, paddingRight: 8)
         
         // 텍스트가 변경될 때마다 호출하기
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateUserInfo), name: UITextView.textDidEndEditingNotification, object: nil)
@@ -91,6 +91,8 @@ class EditProfileCell: UITableViewCell {
         titleLabel.text = viewModel.titleText
         
         infoTextField.text = viewModel.optionValue
+        
+        bioTextView.placeholderLabel.isHidden = viewModel.shouldHidePlaceholderLabel
         bioTextView.text = viewModel.optionValue
     }
 }

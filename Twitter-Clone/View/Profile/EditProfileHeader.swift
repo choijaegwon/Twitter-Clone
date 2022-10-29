@@ -28,7 +28,7 @@ class EditProfileHeader: UIView {
         return iv
     }()
     
-    private let changePhotoButton: UIButton = {
+    private lazy var changePhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Change Profile Photo", for: .normal)
         button.addTarget(self, action: #selector(handleChangeProfilePhoto), for: .touchUpInside)
