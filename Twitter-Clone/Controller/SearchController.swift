@@ -9,9 +9,16 @@ import UIKit
 
 private let reuseIdentifier = "UserCell"
 
-class ExploreController: UITableViewController {
+enum SearchControllerConfiguration {
+    case messages
+    case userSearch
+}
+
+class SearchController: UITableViewController {
     
     // MARK: - Properties
+    
+    private let config: SearchControllerConfiguration
     
     private var users = [User]() {
         didSet {
@@ -34,7 +41,16 @@ class ExploreController: UITableViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     
     // MARK: - Lifecycle
-
+    
+    init(config: SearchControllerConfiguration) {
+        self.config = config
+        super.init(style: .plain)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -56,17 +72,27 @@ class ExploreController: UITableViewController {
         }
     }
     
+    // MARK: - Selectors
+    
+    @objc func handleDismissal() {
+        dismiss(animated: true, completion: nil)
+    }
+    
     // MARK: - Heplers
     
     func configureUI() {
         view.backgroundColor = .white
-        navigationItem.title = "Explore"
+        navigationItem.title = config == .messages ? "New Message" : "Explore"
         
         tableView.register(UserCell.self, forCellReuseIdentifier: reuseIdentifier)
         // tablecell의 높이
         tableView.rowHeight = 60
         // 검은줄 사라지게하기.
         tableView.separatorStyle = .none
+        
+        if config == .messages {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleDismissal))
+        }
     }
     
     // 서치바 만들어주기.
@@ -86,7 +112,7 @@ class ExploreController: UITableViewController {
 
 // MARK: - UITableViewDelegate/DataSource
 
-extension ExploreController {
+extension SearchController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // 검색하는 도중이면 필터링된 사용자수대로 나오고 그게아니면 users사용자수대로 나온다.
         return inSearchMode ? filteredUsers.count : users.count
@@ -111,7 +137,7 @@ extension ExploreController {
 
 // MARK: - UISearchResultsUpdateing
 
-extension ExploreController: UISearchResultsUpdating {
+extension SearchController: UISearchResultsUpdating {
     // 텍스트가 입력될 때마다 searchController.searchBar.text 글자를 받아온다.
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else { return }
