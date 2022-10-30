@@ -47,12 +47,10 @@ class NotificationsController: UITableViewController {
         refreshControl?.endRefreshing()
         
         NotificationService.shared.fetchNotification { notifications in
-            // 가져온후 새로고침 끝내기
-            self.refreshControl?.endRefreshing()
-            self.notifications = notifications
+            // 알람 순서 정렬하기
+            self.notifications = notifications.sorted(by: { $0.timestamp > $1.timestamp })
             self.checkIfUserIsFollowed(notifications: notifications)
-            
-            
+            self.refreshControl?.endRefreshing()
         }
     }
     
