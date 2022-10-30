@@ -26,9 +26,8 @@ struct NotificationService {
         REF_NOTIFICATIONS.child(user.uid).childByAutoId().updateChildValues(values)
     }
     
-    func fetchNotification(completion: @escaping([Notification]) -> Void) {
+    fileprivate func getNotifications(uid: String, completion: @escaping([Notification]) -> Void) {
         var notifications = [Notification]()
-        guard let uid = Auth.auth().currentUser?.uid else { return }
         
         // notifications아래 uid아래 있는 값들을 볼거야
         REF_NOTIFICATIONS.child(uid).observe(.childAdded) { snapshot in
@@ -39,6 +38,21 @@ struct NotificationService {
                 let notification = Notification(user: user, dictionary: dictionary)
                 notifications.append(notification)
                 completion(notifications)
+            }
+        }
+    }
+    
+    func fetchNotification(completion: @escaping([Notification]) -> Void) {
+        let notifications = [Notification]()
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        // 알람이 존재하는지 확인
+        REF_NOTIFICATIONS.child(uid).observeSingleEvent(of: .value) { snapshot in
+            if !snapshot.exists() {
+                // 알람이 존재하지 않는걸 의미한다.
+                completion(notifications)
+            } else {
+                self.getNotifications(uid: uid, completion: completion)
             }
         }
     }

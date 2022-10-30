@@ -57,14 +57,20 @@ class NotificationsController: UITableViewController {
     }
     
     func checkIfUserIsFollowed(notifications: [Notification]) {
-        for (index, notification) in notifications.enumerated() {
+        guard !notifications.isEmpty else { return }
+        
+        notifications.forEach { notification in
+            
             // 해당 사용자를 팔로우하는지 확인한다.
-            if case .follow = notification.type {
-                // 사용자가 해당 사용자에게 동일한 알람을 보내도록하기
-                let user = notification.user
+            guard case .follow = notification.type else { return }
+            // 사용자가 해당 사용자에게 동일한 알람을 보내도록하기
+            let user = notification.user
+        
+            // 팔로우가 되어있는지 확인
+            UserSerivce.shared.checkIfUserFollowed(uid: user.uid) { isFollowd in
                 
-                // 팔로우가 되어있는지 확인
-                UserSerivce.shared.checkIfUserFollowed(uid: user.uid) { isFollowd in
+                // 트윗으로 이동하여 좋아요 누른 트윗을 찾은다음 tweets으로가서 업데이트한다.
+                if let index = self.notifications.firstIndex(where: { $0.user.uid == notification.user.uid }) {
                     // 팔로우상태를 넣어주기
                     self.notifications[index].user.isFollowed = isFollowd
                 }
