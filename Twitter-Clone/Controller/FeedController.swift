@@ -47,6 +47,13 @@ class FeedController: UICollectionViewController {
         fetchTweets()
     }
     
+    @objc func handleProfileImageTap() {
+        guard let user = user else { return }
+        
+        let controller = ProfileController(user: user)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
     // MARK: - API
     
     func fetchTweets() {
@@ -103,6 +110,13 @@ class FeedController: UICollectionViewController {
         profileImageView.setDimensions(width: 32, height: 32)
         profileImageView.layer.cornerRadius = 32 / 2
         profileImageView.layer.masksToBounds = true
+        
+        // 프로필 이미지를 누르면 인식할수있게 바꾸기
+        profileImageView.isUserInteractionEnabled = true
+        // 인식되면 실행되는 함수
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTap))
+        profileImageView.addGestureRecognizer(tap)
+        
         // SDWebImage라이브러리를 사용해서 이미지 세팅해주기
         profileImageView.sd_setImage(with: user.profileImageUrl, completed: nil)
         
