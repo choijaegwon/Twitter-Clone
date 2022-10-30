@@ -158,7 +158,14 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
     
     // 헤더의 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 350)
+        
+        var height: CGFloat = 300
+        
+        if user.bio != nil {
+            height += 40
+        }
+        
+        return CGSize(width: view.frame.width, height: height)
     }
     
     // cell의 사이즈 조절
