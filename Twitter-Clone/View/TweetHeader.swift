@@ -11,6 +11,7 @@ import ActiveLabel
 protocol TweetHeaderDelegate: AnyObject {
     func showActionSheet()
     func handleFetchUser(withUsername username: String)
+    func showProfileUser()
 }
 
 class TweetHeader: UICollectionReusableView {
@@ -193,6 +194,8 @@ class TweetHeader: UICollectionReusableView {
     
     @objc func handleProfileImageTapped() {
         print("DEBUG: Go ti user profile..")
+        delegate?.showProfileUser()
+        
     }
     
     @objc func showActionSheet() {

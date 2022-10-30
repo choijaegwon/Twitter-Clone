@@ -23,7 +23,7 @@ class TweetController: UICollectionViewController {
             collectionView.reloadData()
         }
     }
-    
+     
     // MARK: - Lifecycle
     
     // Feed에서 받아올 수 있게 init으로 생성
@@ -57,7 +57,6 @@ class TweetController: UICollectionViewController {
     
     func fetchReplies() {
         print("DEBUG: Tweet ID is \(tweet.tweetID)")
-        
         TweetService.shared.fetchReplies(forTweet: tweet) { replies in
             self.replies = replies
         }
@@ -126,6 +125,11 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
 // MARK: - TweetHeaderDelegate
 
 extension TweetController: TweetHeaderDelegate {
+    func showProfileUser() {
+        let controller = ProfileController(user: tweet.user)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
     func handleFetchUser(withUsername username: String) {
         UserSerivce.shared.fetchUser(withUsername: username) { user in
             let controller = ProfileController(user: user)
