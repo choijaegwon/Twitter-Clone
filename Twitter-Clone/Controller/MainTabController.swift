@@ -42,6 +42,12 @@ class MainTabController: UITabBarController {
         authenticateUserAndConfigureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .twitterBlue
+        authenticateUserAndConfigureUI()
+    }
+    
     // MARK: - API
     
     func fetchUser() {
